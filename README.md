@@ -259,3 +259,5 @@ run {
 	all z : Zone | some z.records
 }
 ```
+
+![screenshot](screenshot.png)
