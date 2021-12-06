@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<alloy>
+
+<view nodetheme="Martha">
+
+<defaultnode/>
+
+<defaultedge/>
+
+<node>
+   <type name="A"/>
+   <type name="AAAA"/>
+   <type name="AuthoritativeNameServer"/>
+   <type name="CNAME"/>
+   <type name="Int"/>
+   <type name="NameServer"/>
+   <type name="Record"/>
+   <type name="RootNameServer"/>
+   <type name="String"/>
+   <type name="TldNameServer"/>
+   <type name="univ"/>
+   <type name="seq/Int"/>
+   <set name="$tldNodes" type="Node"/>
+</node>
+
+<node hideunconnected="yes">
+   <type name="IPv4Address"/>
+   <type name="IPv6Address"/>
+   <type name="RecursiveResolver"/>
+</node>
+
+<node hideunconnected="yes" shape="Ellipse" color="Yellow">
+   <type name="DomainName"/>
+</node>
+
+<node shape="Box" color="Blue">
+   <type name="Zone"/>
+</node>
+
+<node shape="Parallelogram" color="Green">
+   <type name="Node"/>
+</node>
+
+<node style="Bold">
+   <set name="$root" type="Node"/>
+</node>
+
+<node visible="yes">
+   <type name="SOA"/>
+</node>
+
+<edge visible="no" attribute="yes">
+   <relation name="domainName"> <type name="Node"/> <type name="DomainName"/> </relation>
+   <relation name="name"> <type name="Record"/> <type name="DomainName"/> </relation>
+   <relation name="value"> <type name="CNAME"/> <type name="DomainName"/> </relation>
+</edge>
+
+<edge visible="yes" attribute="no">
+   <relation name="records"> <type name="Zone"/> <type name="Record"/> </relation>
+</edge>
+
+</view>
+
+</alloy>

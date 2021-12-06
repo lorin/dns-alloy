@@ -2,11 +2,11 @@
 ---
 # Learning DNS by modeling it with ALloy
 
-Alloy is a great tool to use for modeling an unfamiliar domain.
-I've never really grokked how the DNS system works, and so DNS is a great domain to
+[Alloy] is a great tool to use for learning an unfamiliar domain by incrementally modeling it.
+I've never really grokked how the DNS system works, and so I'm using this as an opportunity to both practice with Alloy and learn more about DNS.
+Note that this is file canb e loaded
 
-* [RFC1034]
-
+[Alloy]: https://alloy.readthedocs.io
 [RFC1034]: https://datatracker.ietf.org/doc/html/rfc1034
 
 ## Domain name space
