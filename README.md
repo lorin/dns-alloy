@@ -1,9 +1,9 @@
 ---
 ---
-# Modeling DNS with Alloy
+# Learning DNS by modeling it with ALloy
 
 Alloy is a great tool to use for modeling an unfamiliar domain.
-I've never quite had a grasp on how the DNS system works, and so it makes a great example of how to model a system for learning.
+I've never really grokked how the DNS system works, and so DNS is a great domain to
 
 * [RFC1034]
 
@@ -70,6 +70,7 @@ fact "nodes from a tree" {
 ## Records
 
 DNS is a system that lets you look up records by domain name.
+Let's model a record.
 
 
 ```alloy
@@ -78,7 +79,7 @@ abstract sig Record {
 }
 ```
 
-There are a ton of different DNS record types, let's just model some common ones:
+There are many different DNS record types, let's model some common ones:
 
 ```alloy
 sig A extends Record {
@@ -97,14 +98,14 @@ sig CNAME extends Record {
 	value: DomainName
 }
 
-pred noRecordsHaveSameName[r: set Record] {
+pred noTwoRecordsHaveSameName[r: set Record] {
 	all disj r1, r2: Record | no r1.name & r2.name
 }
 
 fact {
-	noRecordsHaveSameName[A]
-	noRecordsHaveSameName[AAAA]
-	noRecordsHaveSameName[CNAME]
+	noTwoRecordsHaveSameName[A]
+	noTwoRecordsHaveSameName[AAAA]
+	noTwoRecordsHaveSameName[CNAME]
 }
 ```
 
