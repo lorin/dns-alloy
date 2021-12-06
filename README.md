@@ -38,6 +38,9 @@ The domain name space is a tree, where each node corresponds to a domain name. H
 
 ```
 
+Each node in the tree has a domain name.
+For example, the node labeled `ISI` has the name `isi.edu.`
+
 Here's an alloy model.
 
 
@@ -69,7 +72,8 @@ fact "nodes from a tree" {
 ```
 ## Records
 
-DNS is a system that lets you look up records by domain name.
+The DNS system enables clients to retrieve records by domain name.
+Think of it as a key-value system where the keys are domain names and the values are record of different types.
 Let's model a record.
 
 
