@@ -125,7 +125,7 @@ Here's an example of a portion of the domain name space subdivided into zones, i
 
 ![zone diagram](dns-zones.jpg)
 
-Note: I just assumed the root, com, and org are all in separate zones, but I don't actually know.
+Note: this diagram assumes that the root, `com`, and `org` nodes are all in separate zones, but I don't actually know, and I'm not sure how to check.
 
 Observe that:
 
