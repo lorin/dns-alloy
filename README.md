@@ -196,7 +196,7 @@ There are several kinds of name servers:
 ```alloy
 // These are the servers that DNS clients talk to directly,
 // e.g., your ISP's DNS server, Google's 8.8.8.8, Cloudflare's 1.1.1.1
-// They resolve by calling all servers
+// They resolve by calling other servers
 sig RecursiveResolver extends NameServer {} {
 	// these resolvers are not authoritative for any zones
 	no zones
