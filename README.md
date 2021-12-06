@@ -230,7 +230,7 @@ sig AuthoritativeNameServer extends NameServer {} {
 
 ```
 
-We now have enough to do an SOA record
+We can now model SOA records, which contain references to name servers.
 
 ```alloy
 sig SOA extends Record {
@@ -249,6 +249,9 @@ fact "every zone has exactly one SOA record" {
 }
 ```
 
+## Visualizing
+
+We can run this to generate a visualization of an instance of our model.
 
 ```alloy
 run {
