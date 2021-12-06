@@ -48,6 +48,10 @@ sig Node {
 	domainName: disj DomainName,
 	children: set Node
 }
+
+fun parent[n : Node] : Node  {
+	n.~children
+}
 ```
 
 Let's make sure the nodes form a tree:
@@ -110,6 +114,27 @@ From [RFC1034]:
 
 > every zone has at least one node, and hence domain name, for which it is authoritative, and all of the nodes in a particular zone are connected.
 
+The domain name space is carved up into regions called *zones*.
+Each zone is contiguous.
+This means that the nodes in a graph make up a connected graph.
+Since the entire graph is a tree, this means that every zone is also a tree.
+The root of the tree in a zone is called the *apex* node.
+
+Here's an example of a portion of the domain name space subdivided into zones, indicated by red circles.
+
+![zone diagram](dns-zones.jpg)
+
+Observe that:
+
+* `example.com` and `www.example.com` are in the same zone
+* `acme.com` and `internal.acme.com` are in separate zones
+
+
+Note: because `com` and `org` are in separate zones, it isn't possible for `example.com` and `example.org` to be in the same zone.
+
+
+Modeling it in Alloy:
+
 ```alloy
 sig Zone {
 	nodes: disj set Node,
@@ -118,7 +143,7 @@ sig Zone {
 	// at least one node
 	some nodes
 
-	// all of the nodes in a zone are connected
+	// the nodes in a zone make upa connected graph
 	all disj n1, n2 : nodes | (n1->n2 in ^children) or (n2->n1 in ^children)
 
 	// all records are in a zone
@@ -129,8 +154,6 @@ sig Zone {
 fact "Every record is associated with exactly one zone" {
 	all r: Record | one records.r
 }
-
-run { some Zone }
 ```
 
 Apex of a zone:
@@ -143,5 +166,94 @@ fun root[nodes: set Node] : Node {
 
 fun apex[z: Zone] : Node {
 	root[z.nodes]
+}
+```
+
+## Name servers
+
+
+A name server is associated with one or more zones.
+
+```alloy
+abstract sig NameServer {
+	zones: set Zone
+}
+
+fact "every zone is associated with at least one name server" {
+	all z : Zone | some zones.z
+}
+```
+
+There are several kinds of name servers:
+
+```alloy
+// These are the servers that DNS clients talk to directly,
+// e.g., your ISP's DNS server, Google's 8.8.8.8, Cloudflare's 1.1.1.1
+// They resolve by calling all servers
+sig RecursiveResolver extends NameServer {} {
+	// these resolvers are not authoritative for any zones
+	no zones
+}
+
+// Root name servers are associated with the root zone
+sig RootNameServer extends NameServer {} {
+	one zones
+	zones.nodes = {n : Node | no parent[n] }
+}
+
+
+fun tldNodes[] : Node {
+	// TLD nodes have parents bu
+	{ n: Node | some parent[n] and no parent[parent[n]] }
+}
+
+// TLD name servers own TLD zones
+sig TldNameServer extends NameServer {} {
+	some zones
+	zones.nodes in tldNodes[]
+}
+
+fact "TLD nodes are only in the zones of TLD name servers" {
+	tldNodes[].~nodes in TldNameServer.zones
+}
+
+
+// Authoritative records for domains other than root and TLDs
+sig AuthoritativeNameServer extends NameServer {} {
+	some zones
+	no zones & RootNameServer.@zones
+	no zones & TldNameServer.@zones
+}
+
+
+```
+
+We now have enough to do an SOA record
+
+```alloy
+sig SOA extends Record {
+	mname: NameServer
+} {
+	// name server must have the zone associated with this record
+	mname.zones in this.~records
+}
+
+fact "every zone has exactly one SOA record" {
+	// all zones have one SOA record
+	all z : Zone | one SOA & z.records
+
+	// All SOA records are in one zone
+	all r : SOA | one r.~records
+}
+```
+
+
+```alloy
+run {
+	some RootNameServer
+	some TldNameServer
+	some AuthoritativeNameServer
+
+	all z : Zone | some z.records
 }
 ```
