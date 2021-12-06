@@ -4,7 +4,7 @@
 
 [Alloy] is a great tool to use for learning an unfamiliar domain by incrementally modeling it.
 I've never really grokked how the DNS system works, and so I'm using this as an opportunity to both practice with Alloy and learn more about DNS.
-Note that this is file canb e loaded
+Note that this is file can be loaded directly into the Alloy analyzer.
 
 [Alloy]: https://alloy.readthedocs.io
 [RFC1034]: https://datatracker.ietf.org/doc/html/rfc1034
