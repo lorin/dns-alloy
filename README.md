@@ -124,6 +124,8 @@ Here's an example of a portion of the domain name space subdivided into zones, i
 
 ![zone diagram](dns-zones.jpg)
 
+Note: I just assumed the root, com, and org are all in separate zones, but I don't actually know.
+
 Observe that:
 
 * `example.com` and `www.example.com` are in the same zone
